@@ -3,8 +3,8 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-namespace ReusableUI
-{
+namespace ReusableUI {
+	
 	[RequireComponent(typeof(Animator))]
 	[RequireComponent(typeof(CanvasGroup))]
     public class UI_Screen : MonoBehaviour {
@@ -25,7 +25,7 @@ namespace ReusableUI
 
 		#region Main Methods
 		
-		void Start () {
+		void Awake () {
 			animator = GetComponent<Animator>();
 
 			if(m_StartSelectable)
@@ -42,7 +42,6 @@ namespace ReusableUI
 			if(onScreenStart != null) {
 				onScreenStart.Invoke();
 			}
-
 			HandleAnimator("show");
 		}
 

@@ -3,12 +3,15 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace ReusableUI
-{
+namespace ReusableUI {
+	
     public class UI_System : MonoBehaviour {
 
 		#region Variables
 		
+		[Header("System Events")]
+		public UI_Screen m_StartScreen;
+
 		[Header("System Events")]
 		public UnityEvent onSwitchScreen = new UnityEvent();
 
@@ -17,7 +20,7 @@ namespace ReusableUI
 		public float m_FadeInDuration = 1f;
 		public float m_FadeOutDuration = 1f;
 
-		private Component[] screems = new Component[0];
+		private Component[] screens = new Component[0];
 		private UI_Screen currentScreen;
 		private UI_Screen previousScreen;
 		
@@ -33,8 +36,12 @@ namespace ReusableUI
 		#region Main Methods
 		// Use this for initialization
 		void Start () {
-			screems = GetComponentsInChildren<UI_Screen>(true);
-		
+			screens = GetComponentsInChildren<UI_Screen>(true);
+			InitializeScreens();
+
+			if(m_StartScreen)
+				SwitchScreen(m_StartScreen);
+
 			if(m_Fader)
 				m_Fader.gameObject.SetActive(true);
 
@@ -49,13 +56,13 @@ namespace ReusableUI
 		public void SwitchScreen(UI_Screen aScreen) {
 			if(aScreen) {
 				if(currentScreen) {
-					// currentScreen.Close();
+					currentScreen.CloseScreen();
 					previousScreen = currentScreen;
 				}
 
 				currentScreen = aScreen;
 				currentScreen.gameObject.SetActive(true);
-				// currentScreen.StartScreen();
+				currentScreen.StartScreen();
 
 				if(onSwitchScreen != null)
 					onSwitchScreen.Invoke();
@@ -87,6 +94,12 @@ namespace ReusableUI
 			
 			yield return null;
 		}
+
+		void InitializeScreens() {
+            foreach(var screen in screens) {
+                screen.gameObject.SetActive(true);
+            }
+        }
 		#endregion
 	}
 }
