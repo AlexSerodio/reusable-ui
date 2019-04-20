@@ -11,25 +11,25 @@ namespace ReusableUI {
 
 		#region Variables
 		[Header("Main Properties")]
-		public Selectable m_StartSelectable;	// the element that will start highlighted
+		public Selectable startSelectable;	// the element that will start highlighted
 
 		[Header("Screen Events")]
 		public UnityEvent onScreenStart = new UnityEvent();
 		public UnityEvent onScreenClose = new UnityEvent();
 
 		private Animator animator;
+		private const string SHOW_TRIGGER = "show";
+		private const string HIDE_TRIGGER = "hide";
 
 		#endregion
-
-
 
 		#region Main Methods
 		
 		void Awake () {
 			animator = GetComponent<Animator>();
 
-			if(m_StartSelectable)
-				EventSystem.current.SetSelectedGameObject(m_StartSelectable.gameObject);
+			if(startSelectable)
+				EventSystem.current.SetSelectedGameObject(startSelectable.gameObject);
 		}
 		
 		#endregion
@@ -39,18 +39,17 @@ namespace ReusableUI {
 		#region Helper Methods
 
 		public virtual void StartScreen() {
-			if(onScreenStart != null) {
+			if(onScreenStart != null)
 				onScreenStart.Invoke();
-			}
-			HandleAnimator("show");
+
+			HandleAnimator(SHOW_TRIGGER);
 		}
 
 		public virtual void CloseScreen() {
-			if(onScreenClose != null) {
+			if(onScreenClose != null)
 				onScreenClose.Invoke();
-			}
 
-			HandleAnimator("hide");
+			HandleAnimator(HIDE_TRIGGER);
 		}
 
 		private void HandleAnimator(string aTrigger) {

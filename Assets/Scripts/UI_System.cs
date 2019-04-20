@@ -10,15 +10,15 @@ namespace ReusableUI {
 		#region Variables
 		
 		[Header("System Events")]
-		public UI_Screen m_StartScreen;
+		public UI_Screen startScreen;
 
 		[Header("System Events")]
 		public UnityEvent onSwitchScreen = new UnityEvent();
 
 		[Header("Fader Properties")]
-		public Image m_Fader;
-		public float m_FadeInDuration = 1f;
-		public float m_FadeOutDuration = 1f;
+		public Image fader;
+		public float fadeInDuration = 1f;
+		public float fadeOutDuration = 1f;
 
 		private Component[] screens = new Component[0];
 		private UI_Screen currentScreen;
@@ -39,11 +39,11 @@ namespace ReusableUI {
 			screens = GetComponentsInChildren<UI_Screen>(true);
 			InitializeScreens();
 
-			if(m_StartScreen)
-				SwitchScreen(m_StartScreen);
+			if(startScreen)
+				SwitchScreen(startScreen);
 
-			if(m_Fader)
-				m_Fader.gameObject.SetActive(true);
+			if(fader)
+				fader.gameObject.SetActive(true);
 
 			FadeIn();
 		}
@@ -70,29 +70,18 @@ namespace ReusableUI {
 		}
 
 		public void FadeIn() {
-			if(m_Fader) {
-				m_Fader.CrossFadeAlpha(0f, m_FadeInDuration, false);
-			}
+			if(fader)
+				fader.CrossFadeAlpha(0f, fadeInDuration, false);
 		}
 
 		public void FadeOut() {
-			if(m_Fader) {
-				m_Fader.CrossFadeAlpha(0f, m_FadeOutDuration, false);
-			}
+			if(fader)
+				fader.CrossFadeAlpha(0f, fadeOutDuration, false);
 		}
 
 		public void GoToPreviousScreen() {
 			if(previousScreen)
 				SwitchScreen(previousScreen);
-		}
-
-		public void LoadScreen(int sceneIndex) {
-			StartCoroutine(WaitToLoadScene(sceneIndex));
-		}
-
-		private IEnumerator WaitToLoadScene(int sceneIndex) {
-			
-			yield return null;
 		}
 
 		void InitializeScreens() {
